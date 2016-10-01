@@ -2,10 +2,9 @@ package com.flamingo.demoapp;
 
 import java.util.Arrays;
 
-import static android.R.attr.max;
 
 /**
- * Description:  八大常用排序算法，方法中并不一定是最优算法
+ * Description:  八大常用排序算法，方法中并不一定是最优算法，如果想要达到最优的时间复杂度，需要对其进行修改
  * Author:       WuRuiqiang (263454190@qq.com)
  * CreateDate:   2016/9/20-14:23
  * UpdateUser:
@@ -18,13 +17,16 @@ public class MainClass {
     public static void main(String[] args) {
         int[] a = {49, 38, 65, 97, 76, 13, 27, 49, 78, 34, 12, 64, 5, 4, 62, 99, 98, 54, 56, 17, 18, 23, 34, 15, 35, 25, 53, 51};
         MainClass mainClass = new MainClass();
-        long before = System.currentTimeMillis();
         mainClass.shellSort(a);
-        long time = System.currentTimeMillis() - before;
-        System.out.println(time + "time");
         System.out.println(Arrays.toString(a));
     }
 
+    /**
+     * 插入排序
+     * 选择待排序数组中第二个数，然后将其与前面的数相比较，如果发现比这个数大（小）的数，则将该数后移一位
+     * 直到前面没有比这个数大（小）的数，则把该数放置在当前位置 该算法时间复杂度为O（n^2）
+     * @param a
+     */
     private void insertSort(int[] a) {
 
         int temp;
@@ -74,6 +76,12 @@ public class MainClass {
         }
     }
 
+    /**
+     * 选择排序
+     * 第一次循环从待排序数组中选择出最小的数，将其放置在第一位，第二次则在第一位之后的数中选出最小的
+     * 放置在第二位，以此类推 时间复杂度为O(n^2)
+     * @param a
+     */
     private void chooseSort(int[] a) {
 
         for (int i = 0; i < a.length; i++) {
@@ -90,62 +98,12 @@ public class MainClass {
         }
     }
 
-    public void heapSort2(int[] a) {
-        System.out.println("开始排序");
-        int arrayLength = a.length;
-        //循环建堆
-        for (int i = 0; i < arrayLength - 1; i++) {
-            //建堆
-            buildMaxHeap2(a, arrayLength - 1 - i);
-            //交换堆顶和最后一个元素
-            swap2(a, 0, arrayLength - 1 - i);
-            System.out.println(Arrays.toString(a));
-        }
-    }
-
-
-    private void swap2(int[] data, int i, int j) {
-        // TODO Auto-generated method stub
-        int tmp = data[i];
-        data[i] = data[j];
-        data[j] = tmp;
-    }
-
-    //对data数组从0到lastIndex建大顶堆
-    private void buildMaxHeap2(int[] data, int lastIndex) {
-        // TODO Auto-generated method stub
-        //从lastIndex处节点（最后一个节点）的父节点开始
-
-        for (int i = (lastIndex - 1) / 2; i >= 0; i--) {
-            //k保存正在判断的节点
-            int k = i;
-            //如果当前k节点的子节点存在
-            while (k * 2 + 1 <= lastIndex) {
-                //k节点的左子节点的索引
-                int biggerIndex = 2 * k + 1;
-                //如果biggerIndex小于lastIndex，即biggerIndex+1代表的k节点的右子节点存在
-                if (biggerIndex < lastIndex) {
-                    //若果右子节点的值较大
-                    if (data[biggerIndex] < data[biggerIndex + 1]) {
-
-                        //biggerIndex总是记录较大子节点的索引
-                        biggerIndex++;
-                    }
-                }
-
-                //如果k节点的值小于其较大的子节点的值
-                if (data[k] < data[biggerIndex]) {
-                    //交换他们
-                    swap(data, k, biggerIndex);
-                    //将biggerIndex赋予k，开始while循环的下一次循环，重新保证k节点的值大于其左右子节点的值
-                    k = biggerIndex;
-                } else {
-                    break;
-                }
-            }
-        }
-    }
-
+    /**
+     * 冒泡排序
+     * 选择第一个数，将其与后一位数进行比较，如果比后一位数小则交换两者位置，直至队尾
+     * 重复上一步，以此类推
+     * @param a
+     */
     private void bubbleSort(int[] a) {
         for (int i = 1; i <= a.length; i++) {
             for (int j = 0; j < a.length - i; j++) {
@@ -158,6 +116,13 @@ public class MainClass {
         }
     }
 
+    /**
+     * 堆排序
+     * 首先将待排序数组构造成大（小）顶堆，堆满足完全二叉树的规则。堆中的第i个节点（从0开始计），其左子树为
+     * 2i，右子树为2i+1，将构造好的大（小）顶堆的根节点与其最末尾的节点交换位置，然后再对剩下的数构造大顶堆，
+     * 以此类推
+     * @param a
+     */
     private void heapSort(int[] a) {
 
         for (int i = 0; i < a.length - 1; i++) {
@@ -188,6 +153,14 @@ public class MainClass {
         }
     }
 
+    /**
+     * 快速排序
+     * 1、选择一个数（通常是第一个数a0），从队尾开始（j=a.length），寻找比a0小的数，并将其与a0的位置交换
+     * 2、从队首开始(i=0)，寻找比a0大的数，并将其与a0的位置交换。
+     * 3、重复1跟2，直至i==j，此时左边均比a0小，右边均比a0大，对左右两个部分继续进行上述步骤。直至剩下部分为1，排序完成
+     * 使用递归方式实现
+     * @param a
+     */
     private void quickSort(int[] a) {
         int start = 0, end = a.length - 1;
 
@@ -222,6 +195,18 @@ public class MainClass {
         return start;
     }
 
+    /**
+     * 归并排序
+     * 将待排序数组进行分组，最初两个元素为一组，不足2个的单独一个数一组，然后两两合并
+     * 合并规则为：归并过程为：比较a[i]和a[j]的大小，若a[i]≤a[j]，则将第一个有序表中的元素a[i]复制到r[k]中，
+     * 并令i和k分别加上1；否则将第二个有序表中的元素a[j]复制到r[k]中，并令j和k分别加上1，如此循环下去，
+     * 直到其中一个有序表取完，然后再将另一个有序表中剩余的元素复制到r中从下标k到下标t的单元。归并排序的
+     * 算法我们通常用递归实现，先把待排序区间[s,t]以中点二分，接着把左边子区间排序，再把右边子区间排序，
+     * 最后把左区间和右区间用一次归并操作合并成有序的区间[s,t]。
+     * @param a
+     * @param start
+     * @param end
+     */
     private void mergeSort(int[] a, int start, int end) {
         if (start < end) {
             int center = (end + start) / 2;
@@ -267,6 +252,12 @@ public class MainClass {
 
     /**
      * 基数排序（LSD）
+     * LSD算法过程为：我们知道，任何一个阿拉伯数，它的各个位数上的基数都是以0~9来表示的。
+     * 所以我们不妨把0~9视为10个桶。 我们先根据序列的个位数的数字来进行分类，将其分到指定的桶中。
+     * 例如：R[0] = 50，个位数上是0，将这个数存入编号为0的桶中。分类后，我们在从各个桶中，
+     * 将这些数按照从编号0到编号9的顺序依次将所有数取出来。这时，得到的序列就是个位数上呈递增趋势的序列。
+     * 按照个位数排序： {50, 30, 0, 100, 11, 2, 123, 543, 187, 49}。
+     *接下来，可以对十位数、百位数也按照这种方法进行排序，最后就能得到排序完成的序列。
      * @param a
      */
     private void radixSort(int[] a) {
